@@ -1,4 +1,4 @@
-package pet.vetmap.test;
+package org.wikipedia.test;
 
 import com.codeborne.selenide.CollectionCondition;
 import com.codeborne.selenide.Condition;
