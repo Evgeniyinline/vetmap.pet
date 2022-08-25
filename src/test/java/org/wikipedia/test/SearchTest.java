@@ -2,6 +2,8 @@ package org.wikipedia.test;
 
 import com.codeborne.selenide.CollectionCondition;
 import com.codeborne.selenide.Condition;
+import com.codeborne.selenide.logevents.SelenideLogger;
+import io.qameta.allure.selenide.AllureSelenide;
 import org.apache.commons.codec.language.bm.Lang;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
@@ -20,10 +22,11 @@ import static com.codeborne.selenide.Selenide.*;
 
 public class SearchTest {
 
-
     @ValueSource(strings = {"Санкт-Петербург","Москва","Новосибирск"})
     @ParameterizedTest(name = "Поиск статьи про {0} в Википедии" )
+
     void searchCityTest(String testCity) {
+        SelenideLogger.addListener("allure", new AllureSelenide());
         open("https://ru.wikipedia.org");
         $(".vector-search-box-input").setValue(testCity);
         $("#searchButton").click();
@@ -37,6 +40,7 @@ public class SearchTest {
     },delimiter = '|')
     @ParameterizedTest(name = "Поиск статьи про {0} с текстом {1} в Википедии" )
     void complexSearchCityTest(String testCity,String expectedResult) {
+        SelenideLogger.addListener("allure", new AllureSelenide());
         open("https://ru.wikipedia.org");
         $(".vector-search-box-input").setValue(testCity);
         $("#searchButton").click();
@@ -57,6 +61,7 @@ public class SearchTest {
     @MethodSource()
     @ParameterizedTest(name = "Для станицы {0} отображаются кнопки меню {1}")
     void wikiSearchTest(String url,List<String> resultSearch) {
+        SelenideLogger.addListener("allure", new AllureSelenide());
         open(url);
         $$("#p-views li").shouldHave(CollectionCondition.textsInAnyOrder(resultSearch));
     }
