@@ -1,19 +1,24 @@
 plugins {
-    id 'java'
+    id 'java-library'
 }
-
-group 'pet.vetmap'
-version '1.0-SNAPSHOT'
 
 repositories {
     mavenCentral()
 }
 
 dependencies {
-    testImplementation 'org.junit.jupiter:junit-jupiter-api:5.8.1'
-    testRuntimeOnly 'org.junit.jupiter:junit-jupiter-engine:5.8.1'
+    testImplementation(
+            'com.codeborne:selenide:6.7.2', 
+            'org.junit.jupiter:junit-jupiter:5.9.0',
+            'org.slf4j:slf4j-simple:1.7.36',
+            'io.qameta.allure:allure-selenide:2.19.0'
+    )
 }
 
 test {
     useJUnitPlatform()
+}
+
+tasks.withType(JavaCompile) {
+    options.encoding = 'UTF-8'
 }
