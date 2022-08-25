@@ -27,10 +27,8 @@ public class SearchTest {
         open("https://ru.wikipedia.org");
         $(".vector-search-box-input").setValue(testCity);
         $("#searchButton").click();
-        $$("#bodyContent").shouldBe(CollectionCondition.itemWithText(testCity));
+        $$("#firstHeading").shouldBe(CollectionCondition.itemWithText(testCity));
     }
-
-
     @CsvSource(value = {
             "Санкт-Петербург | Расположен на северо-западе страны на побережье",
             "Москва | Расположена на западе России, на реке ",
@@ -47,24 +45,20 @@ public class SearchTest {
                 .shouldHave(text(expectedResult));
 
     }
-
-    static Stream<Arguments> appTorrentTest() {
+    static Stream<Arguments> wikiSearchTest() {
         return Stream.of(
-                Arguments.of("Русский",List.of("Программы", "Игры", "Расширения", "Статьи", "Версии ОС", "Товары")),
-                Arguments.of("English", List.of("Programs", "Games", "Extensions", "Articles", "OS versions", "Products")),
-                Arguments.of("German", List.of("Programme", "Spiele", "Erweiterungen", "Artikel", "OS-Versionen", "Produkte"))
+                Arguments.of("https://ru.wikipedia.org/wiki/Санкт-Петербург",List.of("Читать", "Просмотр кода", "История")),
+                Arguments.of("https://ru.wikipedia.org/wiki/Москва", List.of("Читать", "Текущая версия", "Просмотр кода", "История")),
+                Arguments.of("https://ru.wikipedia.org/wiki/Новосибирск", List.of("Читать", "Править", "Править код", "История"))
 
         );
     }
-//пристрелить кнопку
-    @MethodSource()
-    @ParameterizedTest(name = "Для локали {0} отображаются кнопки меню {1}")
-    void appTorrentTest(String lang,List<String> expectedButtons) {
-        open("https://appstorrent.ru");
-        $(".lang").click();
-        $$("#langDropdown a").find(text(lang)).click();
-        $$(".container a").shouldHave((CollectionCondition) expectedButtons);
 
+    @MethodSource()
+    @ParameterizedTest(name = "Для станицы {0} отображаются кнопки меню {1}")
+    void wikiSearchTest(String url,List<String> resultSearch) {
+        open(url);
+        $$("#p-views li").shouldHave(CollectionCondition.textsInAnyOrder(resultSearch));
     }
 
 }
